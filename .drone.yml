@@ -30,6 +30,28 @@ steps:
       source: .vuepress/dist/*
       target: /root/doc
       secrets: [ rsync_key ]
+    when:
+      target:
+        - production
+      event:
+        - promote
+
+  - name: rsync
+    image: drillster/drone-rsync
+    environment:
+      RSYNC_KEY:
+        from_secret: rsync_key
+    settings:
+      hosts:
+        - 47.94.147.222
+      source: .vuepress/dist/*
+      target: /root/doc
+      secrets: [ rsync_key ]
+    when:
+      target:
+        - staging
+      event:
+        - promote
 
   - name: notify
     image: curlimages/curl
