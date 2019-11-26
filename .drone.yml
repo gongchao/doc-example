@@ -1,0 +1,32 @@
+---
+kind: pipeline
+type: docker
+name: web
+
+steps:
+  - name: npm install
+    image: node:alpine
+    commands:
+      - npm i --registry=https://registry.npm.taobao.org
+
+  - name: test
+    image: node:alpine
+    commands:
+      - npm run test
+
+  - name: build
+    image: node:alpine
+    commands:
+      - npm run build
+
+  - name: rsync
+    image: drillster/drone-rsync
+    environment:
+      RSYNC_KEY:
+        from_secret: rsync_key
+    settings:
+      hosts:
+        - 47.94.147.222
+      source: .vuepress/dist/*
+      target: /root/doc
+      secrets: [ rsync_key ]
