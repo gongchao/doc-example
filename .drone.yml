@@ -19,7 +19,7 @@ steps:
     commands:
       - npm run build
 
-  - name: rsync
+  - name: rsync production
     image: drillster/drone-rsync
     environment:
       RSYNC_KEY:
@@ -36,7 +36,7 @@ steps:
       event:
         - promote
 
-  - name: rsync
+  - name: rsync staging
     image: drillster/drone-rsync
     environment:
       RSYNC_KEY:
